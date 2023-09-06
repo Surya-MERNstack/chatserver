@@ -13,12 +13,12 @@ const jwtSecret = process.env.JWT_TOKEN || "suryaperumal";
 dotenv.config();
 
 app.use('/uploads', express.static(__dirname + '/uploads'));
-app.use(cookie());
-app.use(express.json());
+app.use(cookie()); 
+app.use(express.json());  
 
 app.use(
   cors({
-    credentials: true, 
+    credentials: true,  
     origin: "http://localhost:5173",
   })
 );
