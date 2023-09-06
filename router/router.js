@@ -107,7 +107,7 @@ router.post("/register", async (req, res) => {
             .status(200)
             .json({
               id: createdUser._id,
-              username,
+              username, 
             });
         }
       }
