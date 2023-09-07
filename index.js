@@ -17,6 +17,8 @@ app.use(cookie());
 app.use(express.json());  
 
 
+// http://127.0.0.1:5173
+
 // const allowedOrigins = ["https://chatclient.netlify.app"];
 // const corsOptions = {
 //   origin: function (origin, callback) {
@@ -33,7 +35,7 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,  
-    origin : "*"
+    origin : "https://chatclient.netlify.app"
   })
 );
 
