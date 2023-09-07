@@ -60,7 +60,7 @@ router.post("/login", async (req, res) => {
 
   const findingUser = await User.findOne({ username });
 
- try{
+
   if (findingUser) { 
     const isCorrectPassword = bcrypt.compareSync(
       password,
@@ -79,11 +79,8 @@ router.post("/login", async (req, res) => {
       );
     }
   }
- }catch(err){
-  console.error(err);
-  res.status(404).json({ error: "Internal Server Error" });
  }
-});
+);
 
 router.post('/logout', async (req, res) => {
   res.cookie("token", '', { sameSite: "none", secure: true }).json('ok')
