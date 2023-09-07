@@ -17,19 +17,23 @@ app.use(cookie());
 app.use(express.json());  
 
 
-const allowedOrigins = ["https://chatclient.netlify.app"];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-};
+// const allowedOrigins = ["https://chatclient.netlify.app"];
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
 
 app.use(
-  cors(corsOptions)
+  cors({
+    credentials: true,  
+    // origin: "https://chatclient.netlify.app/",
+    origin : "http://localhost:5173/"
+  })
 );
 
 app.use(express.urlencoded({ extended: false }));
