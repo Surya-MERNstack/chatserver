@@ -18,10 +18,20 @@ app.use(express.json());
 
 // http://127.0.0.1:5173
 
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: "https://chatclient.netlify.app/",
+//   })
+// );
+
 app.use(
   cors({
     credentials: true,
-    origin: "https://chatclient.netlify.app/",
+    origin: [
+      "https://main--chatclient.netlify.app",
+      "https://chatclient.netlify.app",
+    ],
   })
 );
 
