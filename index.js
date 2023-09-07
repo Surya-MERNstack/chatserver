@@ -107,7 +107,6 @@ wss.on("connection", (connection, req) => {
     let filename = null;
     const { recipient, text, file } = message;
     if(file) {
-    //  fs.writeFile()
     const parts = file.name.split('.');
     const last = parts[parts.length -1];
      filename = Date.now() + '.' + last 
