@@ -16,11 +16,20 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(cookie()); 
 app.use(express.json());  
 
+
+const allowedOrigins = ["https://chatclient.netlify.app"];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
 app.use(
-  cors({
-    credentials: true,  
-    origin: "https://chatclient.netlify.app/",
-  })
+  cors(corsOptions)
 );
 
 app.use(express.urlencoded({ extended: false }));
