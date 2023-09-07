@@ -8,21 +8,20 @@ const cookie = require("cookie-parser");
 const ws = require("ws");
 const jwt = require("jsonwebtoken");
 const Message = require("./models/message");
-const fs = require('fs')
+const fs = require("fs");
 const jwtSecret = process.env.JWT_TOKEN || "suryaperumal";
 dotenv.config();
 
-app.use('/uploads', express.static(__dirname + '/uploads'));
-app.use(cookie()); 
-app.use(express.json());  
-
+app.use("/uploads", express.static(__dirname + "/uploads"));
+app.use(cookie());
+app.use(express.json());
 
 // http://127.0.0.1:5173
 
 app.use(
   cors({
-    credentials: true,  
-    origin : " http://localhost:5173/"
+    credentials: true,
+    origin: "https://chatclient.netlify.app/",
   })
 );
 
@@ -49,12 +48,11 @@ app.get("/", (req, res) => {
   res.json("server is ok");
 });
 
-
 const server = app.listen(Port);
 
 const wss = new ws.WebSocketServer({ server });
 
-wss.on("connection", (connection, req) => { 
+wss.on("connection", (connection, req) => {
   connection.isAlive = true;
 
   connection.timer = setInterval(() => {
@@ -62,9 +60,9 @@ wss.on("connection", (connection, req) => {
     connection.deathTimer = setTimeout(() => {
       connection.isAlive = false;
       connection.terminate();
-      clearInterval(connection.timer)
+      clearInterval(connection.timer);
       notify();
-      console.log('death')
+      console.log("death");
     }, 1000);
   }, 5000);
 
@@ -83,7 +81,7 @@ wss.on("connection", (connection, req) => {
         })
       );
     });
-  }
+  };
 
   //read username and id from the cookie for this connection
   const cookies = req.headers.cookie;
@@ -109,23 +107,22 @@ wss.on("connection", (connection, req) => {
     // console.log(message)
     let filename = null;
     const { recipient, text, file } = message;
-    if(file) {
-    const parts = file.name.split('.');
-    const last = parts[parts.length -1];
-     filename = Date.now() + '.' + last 
-    const path = __dirname + '/uploads/'+filename
-    const buffer = new Buffer(file.data.split(',')[1], 'base64');
-    fs.writeFile(path,buffer, ( ) => { 
-      console.log('file saved :' +path)
-    
-    })
-  }
+    if (file) {
+      const parts = file.name.split(".");
+      const last = parts[parts.length - 1];
+      filename = Date.now() + "." + last;
+      const path = __dirname + "/uploads/" + filename;
+      const buffer = new Buffer(file.data.split(",")[1], "base64");
+      fs.writeFile(path, buffer, () => {
+        console.log("file saved :" + path);
+      });
+    }
     if (recipient && (text || file)) {
       const messageDoc = await Message.create({
         sender: connection.userId,
         recipient,
         text,
-        file : file ? filename : null
+        file: file ? filename : null,
       });
       [...wss.clients]
         .filter((e) => e.userId === recipient)
@@ -135,7 +132,7 @@ wss.on("connection", (connection, req) => {
               text,
               sender: connection.userId,
               recipient,
-              file : file ? filename : null,
+              file: file ? filename : null,
               _id: messageDoc._id,
             })
           )
@@ -145,6 +142,5 @@ wss.on("connection", (connection, req) => {
 
   //notify everyone about online (when someone connect)
   //   console.log([...wss.clients].map((data) => data.username))
-    notify()
+  notify();
 });
-
