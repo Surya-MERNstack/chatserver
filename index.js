@@ -28,11 +28,12 @@ app.use(express.json());
 //   },
 // };
 
+ // origin: "https://chatclient.netlify.app/",
+
 app.use(
   cors({
     credentials: true,  
-    // origin: "https://chatclient.netlify.app/",
-    origin : "http://localhost:5173/"
+    origin : "*"
   })
 );
 
