@@ -61,6 +61,7 @@ router.post("/login", async (req, res) => {
   const findingUser = await User.findOne({ username });
 
 
+
   if (findingUser) { 
     const isCorrectPassword = bcrypt.compareSync(
       password,
@@ -89,13 +90,14 @@ router.post('/logout', async (req, res) => {
 
 
 router.post("/register", async (req, res) => {
-  const { username,email, password } = req.body;
+  const { username, password } = req.body;
+
+
   try {
     const hashedPassword = bcrypt.hashSync(password, bcryptSalt);
 
     const createdUser = await User.create({
       username: username, 
-      email : email,
       password: hashedPassword,
     }); 
     jwt.sign(
